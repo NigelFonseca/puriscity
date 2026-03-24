@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buses Puriscal - Horarios</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --accent-color: #3b82f6;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --btn-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { width: 100%; max-width: 450px; }
+
+        h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; }
+
+        .btn-ruta {
+            width: 100%;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid #333;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ruta:active {
+            transform: scale(0.98);
+            background-color: #222;
+        }
+
+        .btn-ruta span.arrow {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 14px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .contador {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .info-item span { display: block; font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; }
+        .info-item b { font-size: 16px; }
+
+        .proximos-container {
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            background: #111;
+            border-radius: 10px;
+        }
+
+        .proximos-container small { color: var(--text-dim); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="step1">
+    <div class="header-container" style="text-align: center; margin-bottom: 20px;">
+    <img src="img/logo-puriscity.png" alt="Logo PurisCity" style="max-width: 300px; height: auto;">
+    </div>
+
+        <h2>Rutas de Autobus en Puriscal 🚌</h2>
+        <h3>Por favor, seleccione la ruta que desea ver, para saber cuánto tiempo falta para el próximo bus:</h3>
+        <button class="btn-ruta" onclick="selectRoute('guayabo')">Guayabo (Cruce de Tabarcia) <span class="arrow">></span></button>
+        <button class="btn-ruta" onclick="selectRoute('palmichal')">Palmichal <span class="arrow">></span></button>
+        <button class="btn-ruta" onclick="selectRoute('jaris')">Jaris <span class="arrow">></span></button>
+        <button class="btn-ruta btn-disabled" disabled>San Antonio Abajo <span>Próximamente</span></button>
+        <button class="btn-ruta btn-disabled" disabled>Mercedes Norte <span>Próximamente</span></button>
+        <button class="btn-ruta btn-disabled" disabled>Zapatón <span>Próximamente</span></button>
+        <button class="btn-ruta btn-disabled" disabled>San Rafael <span>Próximamente</span></button>
+    </div>
+
+    <div id="step2" class="hidden">
+        <button class="btn-back" onclick="showStep(1)">← VOLVER</button>
+        <h2 id="routeTitleDisplay"></h2>
+        <button class="btn-ruta" onclick="selectDirection(0)"><span id="dirName0"></span> <span class="arrow">></span></button>
+        <button class="btn-ruta" onclick="selectDirection(1)"><span id="dirName1"></span> <span class="arrow">></span></button>
+    </div>
+
+    <div id="step3" class="hidden">
+        <button class="btn-back" onclick="showStep(2)">← CAMBIAR DIRECCIÓN</button>
+        <div class="card">
+            <span id="dayLabel" style="color: var(--accent-color); font-size: 12px; font-weight: bold;"></span>
+            <div id="originDisplay" style="margin-top: 5px; font-size: 18px;"></div>
+            
+            <div class="contador" id="countdown">--:--</div>
+            
+            <div class="info-grid">
+                <div class="info-item"><span>Actual</span><b id="currTime">--:--</b></div>
+                <div class="info-item"><span>Anterior</span><b id="prevBus">--:--</b></div>
+                <div class="info-item"><span>Siguiente</span><b id="nextBus">--:--</b></div>
+            </div>
+
+            <div class="proximos-container">
+                <small>RESTO DEL DÍA:</small>
+                <div id="otherTimes" style="margin-top: 8px; font-size: 14px; letter-spacing: 1px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const data = {
+        guayabo: {
+            name: "Guayabo - Puriscal",
+            dirs: ["Puriscal", "Guayabo"],
+            h: {
+                semana: [
+                    ["05:00", "07:30", "08:00", "09:30", "10:00", "11:00", "11:30", "12:00", "13:00", "13:30", "14:00", "15:00"],
+                    ["05:25", "06:30", "08:00", "08:30", "10:00", "11:00", "11:30", "12:00", "13:00", "13:30", "14:00", "15:00"]
+                ],
+                sabado: [
+                    ["07:30", "08:00", "09:30", "10:00", "11:00", "11:30", "12:00", "13:00", "14:00", "15:00", "15:30", "16:30", "18:05"],
+                    ["07:30", "08:00", "08:45", "10:00", "11:30", "12:00", "13:00", "13:30", "14:30", "16:00", "17:00", "18:30"]
+                ],
+                domingo: [
+                    ["08:00", "10:00", "12:00", "15:00", "17:00"],
+                    ["08:30", "11:00", "13:00", "15:30", "17:30"]
+                ]
+            }
+        },
+        palmichal: {
+            name: "Palmichal - Puriscal",
+            dirs: ["Puriscal", "Palmichal"],
+            h: {
+                semana: [
+                    ["05:50", "07:00", "09:00", "10:30", "12:30", "14:30", "16:00", "17:00"],
+                    ["05:45", "06:30", "07:00", "08:30", "10:00", "12:00", "14:00", "16:00"]
+                ],
+                sabado: [
+                    ["07:00", "09:00", "10:30", "12:30", "14:30", "16:00", "17:00"],
+                    ["05:55", "06:30", "08:30", "10:00", "12:00", "14:00", "16:00"]
+                ],
+                domingo: [
+                    ["11:00", "14:00"],
+                    ["07:00", "12:00"]
+                ]
+            }
+        },
+        jaris: {
+            name: "Jaris - Puriscal",
+            dirs: ["Puriscal", "Jaris"],
+            h: {
+                semana: [
+                    ["05:30", "06:30", "09:00", "12:30", "15:00", "17:05"],
+                    ["06:00", "07:00", "09:30", "13:00", "15:35", "17:35"]
+                ],
+                sabado: [
+                    ["07:00", "09:00", "12:30", "16:00"],
+                    ["07:30", "09:30", "13:00", "16:30"]
+                ],
+                domingo: [
+                    ["09:00", "1:00", "16:00"],
+                    ["09:30", "13:30", "16:30"]
+                ]
+            }
+        }
+    };
+
+    let currentRouteKey = null;
+    let currentDirIdx = null;
+    let timerInterval = null;
+
+    function showStep(step) {
+        document.getElementById('step1').classList.toggle('hidden', step !== 1);
+        document.getElementById('step2').classList.toggle('hidden', step !== 2);
+        document.getElementById('step3').classList.toggle('hidden', step !== 3);
+        if (step !== 3) clearInterval(timerInterval);
+    }
+
+    function selectRoute(key) {
+        currentRouteKey = key;
+        document.getElementById('routeTitleDisplay').innerText = data[key].name;
+        document.getElementById('dirName0').innerText = "Salida de " + data[key].dirs[0];
+        document.getElementById('dirName1').innerText = "Salida de " + data[key].dirs[1];
+        showStep(2);
+    }
+
+    function selectDirection(idx) {
+        currentDirIdx = idx;
+        showStep(3);
+        updateUI();
+        timerInterval = setInterval(updateUI, 1000); 
+    }
+
+    function updateUI() {
+        const now = new Date();
+        const hrs = now.getHours().toString().padStart(2, '0');
+        const min = now.getMinutes().toString().padStart(2, '0');
+        const currentTimeStr = `${hrs}:${min}`;
+        
+        const day = now.getDay();
+        let type = "semana";
+        let dayTxt = "LUNES A VIERNES";
+        if(day === 6) { type = "sabado"; dayTxt = "SÁBADO"; }
+        if(day === 0) { type = "domingo"; dayTxt = "DOMINGO"; }
+
+        const schedule = data[currentRouteKey].h[type][currentDirIdx];
+        let nextIdx = schedule.findIndex(t => t > currentTimeStr);
+
+        document.getElementById('dayLabel').innerText = dayTxt;
+        document.getElementById('originDisplay').innerText = "Desde " + data[currentRouteKey].dirs[currentDirIdx];
+        document.getElementById('currTime').innerText = currentTimeStr;
+
+        if (nextIdx !== -1) {
+            const nextTime = schedule[nextIdx];
+            document.getElementById('nextBus').innerText = formatAMPM(nextTime);
+            document.getElementById('prevBus').innerText = nextIdx > 0 ? formatAMPM(schedule[nextIdx-1]) : "--:--";
+            
+
+            const [nh, nm] = nextTime.split(':');
+            const target = new Date(); 
+            target.setHours(nh, nm, 0);
+            
+            const diffMs = target - now;
+        
+            const totalSegundos = Math.floor(diffMs / 1000);
+            const horas = Math.floor(totalSegundos / 3600);
+            const minutos = Math.floor((totalSegundos % 3600) / 60);
+            const segundos = totalSegundos % 60;
+
+            let textoCountdown = "";
+            if (horas > 0) {
+                textoCountdown += `${horas}h ${minutos}m ${segundos}s`;
+            } else {
+                textoCountdown += `${minutos}m ${segundos}s`;
+            }
+
+            document.getElementById('countdown').innerText = textoCountdown;            
+            const others = schedule.slice(nextIdx + 1);
+            document.getElementById('otherTimes').innerText = others.length > 0 ? others.map(formatAMPM).join(' • ') : "No hay más buses después de este.";
+        } else {
+
+            document.getElementById('countdown').innerText = "FIN DEL SERVICIO";
+            document.getElementById('nextBus').innerText = "--:--";
+            document.getElementById('prevBus').innerText = formatAMPM(schedule[schedule.length-1]);
+            document.getElementById('otherTimes').innerText = "No hay más buses por hoy.";
+        }
+    }
+
+    function formatAMPM(time) {
+        let [h, m] = time.split(':');
+        h = parseInt(h);
+        const ampm = h >= 12 ? 'pm' : 'am';
+        h = h % 12;
+        h = h ? h : 12; 
+        return `${h}:${m}${ampm}`;
+    }
+</script>
+</body>
+</html>
