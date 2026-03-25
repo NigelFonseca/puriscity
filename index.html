@@ -241,14 +241,18 @@
     function updateUI() {
         const now = new Date();
         const currentTimeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        
         const day = now.getDay();
         let type = (day === 6) ? "sabado" : (day === 0 ? "domingo" : "semana");
         let dayTxt = (day === 6) ? "SÁBADO" : (day === 0 ? "DOMINGO" : "LUNES A VIERNES");
 
         const schedule = data[currentRouteKey].h[type][currentDirIdx];
+
+        document.getElementById('currTime').innerText = formatAMPM(currentTimeStr);
         document.getElementById('dayLabel').innerText = dayTxt;
         document.getElementById('originDisplay').innerText = "Desde " + data[currentRouteKey].dirs[currentDirIdx];
-        document.getElementById('currTime').innerText = currentTimeStr;
+        document.getElementById('countdown').style.color = "var(--accent-color)";
+        document.getElementById('countdown').style.fontWeight = "700";
 
         if (schedule[0] === "---") {
             document.getElementById('countdown').innerText = "SIN SERVICIO";
@@ -277,10 +281,22 @@
             const others = schedule.slice(nextIdx + 1);
             document.getElementById('otherTimes').innerText = others.length > 0 ? others.map(formatAMPM).join(' • ') : "Último bus del día.";
         } else {
-            document.getElementById('countdown').innerText = "FIN DEL SERVICIO";
-            document.getElementById('nextBus').innerText = "--:--";
+            document.getElementById('countdown').innerText = "FIN DEL SERVICIO POR HOY";
+            document.getElementById('countdown').style.color = "#ff4d4d"; 
+            document.getElementById('countdown').style.fontWeight = "400";
+            
             document.getElementById('prevBus').innerText = formatAMPM(schedule[schedule.length-1]);
             document.getElementById('otherTimes').innerText = "No hay más buses por hoy.";
+
+            let mañanaIdx = (day + 1) % 7;
+            let tipoMañana = (mañanaIdx === 6) ? "sabado" : (mañanaIdx === 0 ? "domingo" : "semana");
+            const horarioMañana = data[currentRouteKey].h[tipoMañana][currentDirIdx];
+            
+            if (horarioMañana && horarioMañana[0] !== "---") {
+                document.getElementById('nextBus').innerHTML = `<span style="font-size:10px; display:block;">(mañana)</span>${formatAMPM(horarioMañana[0])}`;
+            } else {
+                document.getElementById('nextBus').innerText = "--:--";
+            }
         }
     }
 
