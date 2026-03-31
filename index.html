@@ -106,10 +106,10 @@
         <button class="btn-ruta" onclick="navigateToRoute('cais')">CAIS <span class="arrow">></span></button>
         <button class="btn-ruta" onclick="navigateToRoute('sanantonioabajo')">San Antonio Abajo <span class="arrow">></span></button>
         <button class="btn-ruta" onclick="navigateToRoute('sanjose')">San José <span class="arrow">></span></button>
+        <button class="btn-ruta" onclick="navigateToRoute('sanjuan')">San Juan <span class="arrow">></span></button>
         <button class="btn-ruta btn-disabled" disabled>Mercedes Norte <span>Próximamente</span></button>
         <button class="btn-ruta btn-disabled" disabled>San Rafael <span>Próximamente</span></button>
         <button class="btn-ruta btn-disabled" disabled>Zapatón <span>Próximamente</span></button>
-        <button class="btn-ruta btn-disabled" disabled>San Juan <span>Próximamente</span></button>
         <button class="btn-ruta btn-disabled" disabled>Desamparaditos <span>En un futuro...</span></button>
         <button class="btn-ruta btn-disabled" disabled>La Legua <span>En un futuro...</span></button>
         <button class="btn-ruta btn-disabled" disabled>Pozos <span>En un futuro...</span></button>
@@ -211,7 +211,24 @@
                 ]
             }
         },
-
+            sanjuan: {
+                        name: "San Juan - Puriscal",
+                        dirs: ["Puriscal", "San Juan"],
+                        h: {
+                            semana: [
+                                ["05:30", "06:15", "07:00", "08:30", "10:00", "12:00", "14:30", "16:45", "18:00", "19:00"],
+                                ["05:00", "06:00", "06:30", "07:30", "09:00", "11:00", "13:00", "15:30", "17:30", "18:30"] 
+                            ],
+                            sabado: [
+                                ["06:00", "07:00", "08:30", "10:00", "12:00", "15:00", "17:30"],
+                                ["05:30", "06:30", "07:30", "09:00", "11:00", "13:00", "16:00"] 
+                            ],
+                            domingo:[
+                                ["08:00", "10:00", "12:00", "17:15"],
+                                ["07:30", "09:00", "11:00", "15:00"] 
+                            ]
+                        }
+                    },
     };
 
     let currentRouteKey = null;
