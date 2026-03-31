@@ -21,8 +21,18 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; /* Centra horizontalmente */
+            justify-content: flex-start; /* Contenido arriba */
             min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Contenedor principal con ancho controlado */
+        .container { 
+            width: 100%; 
+            max-width: 450px; 
+            display: flex;
+            flex-direction: column;
         }
 
         .route-list-container {
@@ -33,9 +43,7 @@
             scrollbar-color: var(--accent-color) transparent;
         }
 
-        .route-list-container::-webkit-scrollbar {
-            width: 4px;
-        }
+        .route-list-container::-webkit-scrollbar { width: 4px; }
         .route-list-container::-webkit-scrollbar-thumb {
             background-color: var(--accent-color);
             border-radius: 10px;
@@ -70,14 +78,9 @@
             transition: border-color 0.3s ease;
         }
 
-        #routeSearch:focus {
-            border-color: var(--accent-color);
-        }
+        #routeSearch:focus { border-color: var(--accent-color); }
 
-
-        .container { width: 100%; max-width: 450px; flex: 1; }
-
-        h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 20px; }
+        h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 20px; margin-top: 0; }
         h3 { font-size: 14px; color: var(--text-dim); text-align: center; font-weight: 400; margin-bottom: 25px; line-height: 1.5; }
 
         .btn-ruta {
@@ -96,6 +99,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
+            box-sizing: border-box;
         }
 
         .btn-ruta:active { transform: scale(0.98); background-color: #222; }
@@ -106,6 +110,7 @@
             background: none; border: none; color: var(--accent-color);
             font-size: 14px; margin-bottom: 15px; cursor: pointer;
             display: flex; align-items: center; font-weight: bold;
+            padding: 5px 0;
         }
 
         .card {
@@ -131,11 +136,13 @@
             background: #111; border-radius: 10px;
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
         footer {
-            margin-top: 40px; padding: 20px; text-align: center;
+            margin-top: auto; /* Empuja el footer al final si hay espacio */
+            padding: 30px 20px; text-align: center;
             font-size: 13px; color: var(--text-dim); border-top: 1px solid #222; width: 100%;
+            max-width: 450px;
         }
 
         footer a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
@@ -146,33 +153,27 @@
 <div class="container">
     <div id="step1">
         <div style="text-align: center; margin-bottom: 20px;">
-            <img src="img/logo-puriscity.png" alt="Logo PurisCity" style="max-width: 250px; height: auto;">
+            <img src="img/logo-puriscity.png" alt="Logo PurisCity" style="max-width: 200px; height: auto;">
         </div>
-        <h2>Rutas de Autobús en Puriscal 🚌</h2>
-             <h3>Seleccione o busque una ruta para ver el tiempo restante para el próximo autobús:</h3>
-            <div class="search-container">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="routeSearch" placeholder="Buscar mi ruta (ej: San Antonio, San José...)" onkeyup="filterRoutes()">
-    </div>
+        <h2>Rutas de Autobús 🚌</h2>
+        <h3>Seleccione una ruta para ver el tiempo restante:</h3>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="routeSearch" placeholder="Buscar mi ruta..." onkeyup="filterRoutes()">
+        </div>
 
-    <div class="route-list-container">
-        <button class="btn-ruta" onclick="navigateToRoute('guayabo')">Guayabo (Cruce de Tabarcia) <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('palmichal')">Palmichal <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('jaris')">Jaris <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('cais')">CAIS <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('sanantonioabajo')">San Antonio Abajo <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('sanjose')">San José <span class="arrow">></span></button>
-        <button class="btn-ruta" onclick="navigateToRoute('sanjuan')">San Juan <span class="arrow">></span></button>
-        <button class="btn-ruta btn-disabled" disabled>Mercedes Norte <span>Próximamente</span></button>
-        <button class="btn-ruta btn-disabled" disabled>San Rafael <span>Próximamente</span></button>
-        <button class="btn-ruta btn-disabled" disabled>Zapatón <span>Próximamente</span></button>
-        <button class="btn-ruta btn-disabled" disabled>Desamparaditos <span>En un futuro...</span></button>
-        <button class="btn-ruta btn-disabled" disabled>La Legua <span>En un futuro...</span></button>
-        <button class="btn-ruta btn-disabled" disabled>Pozos <span>En un futuro...</span></button>
-        <button class="btn-ruta btn-disabled" disabled>Barbacoas <span>En un futuro...</span></button>
+        <div class="route-list-container">
+            <button class="btn-ruta" onclick="navigateToRoute('guayabo')">Guayabo (Cruce de Tabarcia) <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('palmichal')">Palmichal <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('jaris')">Jaris <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('cais')">CAIS <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('sanantonioabajo')">San Antonio Abajo <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('sanjose')">San José <span class="arrow">></span></button>
+            <button class="btn-ruta" onclick="navigateToRoute('sanjuan')">San Juan <span class="arrow">></span></button>
+            <button class="btn-ruta btn-disabled" disabled>Mercedes Norte <span>Próximamente</span></button>
+            <button class="btn-ruta btn-disabled" disabled>San Rafael <span>Próximamente</span></button>
+            <button class="btn-ruta btn-disabled" disabled>Zapatón <span>Próximamente</span></button>
         </div>
-    </div>
-       
     </div>
 
     <div id="step2" class="hidden">
@@ -189,9 +190,9 @@
             <div id="originDisplay" style="margin-top: 5px; font-size: 18px;"></div>
             <div class="contador" id="countdown">--:--</div>
             <div class="info-grid">
-                <div class="info-item"><span>Hora Actual</span><b id="currTime">--:--</b></div>
-                <div class="info-item"><span>Salida Anterior</span><b id="prevBus">--:--</b></div>
-                <div class="info-item"><span>Próxima Salida</span><b id="nextBus">--:--</b></div>
+                <div class="info-item"><span>Hora</span><b id="currTime">--:--</b></div>
+                <div class="info-item"><span>Anterior</span><b id="prevBus">--:--</b></div>
+                <div class="info-item"><span>Próxima</span><b id="nextBus">--:--</b></div>
             </div>
             <div class="proximos-container">
                 <small style="color:var(--text-dim)">RESTO DEL DÍA:</small>
@@ -260,7 +261,7 @@
                     ["05:15", "06:00", "06:40", "07:20", "08:00", "08:40", "09:20", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:20", "15:40", "16:00", "16:15", "16:30", "16:45", "17:00", "17:20", "17:40", "18:00", "18:20", "18:40", "19:00", "19:20", "19:40", "20:30", "20:55", "21:15", "21:45", "22:30"],
                     ["03:35", "03:47", "03:59", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:12", "06:24", "06:36", "06:48", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:25", "09:50", "10:15", "10:40", "11:00", "11:20", "11:40", "12:00", "12:30", "13:00", "13:30", "14:00", "14:40", "15:20", "16:00", "16:40", "17:20", "18:00", "18:40", "19:20", "20:00"]
                 ],
-                sabado: [             
+                sabado: [                   
                     ["05:25", "06:00", "06:40", "07:20", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:45", "22:30"],              
                     ["03:45", "04:00", "04:20", "04:40", "05:00", "05:20", "05:40", "06:00", "06:20", "06:40", "07:00", "07:20", "07:40", "08:00", "08:20", "08:40", "09:00", "09:30", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "20:00"]
                 ],
@@ -270,25 +271,16 @@
                 ]
             }
         },
-            sanjuan: {
-                        name: "San Juan - Puriscal",
-                        dirs: ["Puriscal", "San Juan"],
-                        h: {
-                            semana: [
-                                ["05:30", "06:15", "07:00", "08:30", "10:00", "12:00", "14:30", "16:45", "18:00", "19:00"],
-                                ["05:00", "06:00", "06:30", "07:30", "09:00", "11:00", "13:00", "15:30", "17:30", "18:30"] 
-                            ],
-                            sabado: [
-                                ["06:00", "07:00", "08:30", "10:00", "12:00", "15:00", "17:30"],
-                                ["05:30", "06:30", "07:30", "09:00", "11:00", "13:00", "16:00"] 
-                            ],
-                            domingo:[
-                                ["08:00", "10:00", "12:00", "17:15"],
-                                ["07:30", "09:00", "11:00", "15:00"] 
-                            ]
-                        }
-                    },
-                };
+        sanjuan: {
+            name: "San Juan - Puriscal",
+            dirs: ["Puriscal", "San Juan"],
+            h: {
+                semana: [["05:30", "06:15", "07:00", "08:30", "10:00", "12:00", "14:30", "16:45", "18:00", "19:00"], ["05:00", "06:00", "06:30", "07:30", "09:00", "11:00", "13:00", "15:30", "17:30", "18:30"]],
+                sabado: [["06:00", "07:00", "08:30", "10:00", "12:00", "15:00", "17:30"], ["05:30", "06:30", "07:30", "09:00", "11:00", "13:00", "16:00"]],
+                domingo:[["08:00", "10:00", "12:00", "17:15"], ["07:30", "09:00", "11:00", "15:00"]]
+            }
+        },
+    };
 
     let currentRouteKey = null;
     let currentDirIdx = null;
@@ -304,19 +296,13 @@
         currentDirIdx = idx;
         history.pushState({step: 3, route: currentRouteKey, dir: idx}, "");
         showStep(3);
-        updateUI();
     }
 
     window.onpopstate = function(event) {
         if (event.state && event.state.step) {
-            if (event.state.step === 2) {
-                currentRouteKey = event.state.route;
-                showStep(2);
-            } else if (event.state.step === 3) {
-                currentRouteKey = event.state.route;
-                currentDirIdx = event.state.dir;
-                showStep(3);
-            }
+            currentRouteKey = event.state.route || null;
+            currentDirIdx = event.state.dir !== undefined ? event.state.dir : null;
+            showStep(event.state.step);
         } else {
             showStep(1);
         }
@@ -327,14 +313,24 @@
         document.getElementById('step2').classList.toggle('hidden', step !== 2);
         document.getElementById('step3').classList.toggle('hidden', step !== 3);
         
+        if (step === 1) {
+            document.getElementById('routeSearch').value = "";
+            filterRoutes();
+            currentRouteKey = null;
+            currentDirIdx = null;
+        }
+
         if (step === 2 && currentRouteKey) {
             document.getElementById('routeTitleDisplay').innerText = data[currentRouteKey].name;
             document.getElementById('dirName0').innerText = "Salida de " + data[currentRouteKey].dirs[0];
             document.getElementById('dirName1').innerText = "Salida de " + data[currentRouteKey].dirs[1];
         }
         
-        if (step !== 3) clearInterval(timerInterval);
-        else timerInterval = setInterval(updateUI, 1000);
+        clearInterval(timerInterval);
+        if (step === 3 && currentRouteKey !== null && currentDirIdx !== null) {
+            updateUI();
+            timerInterval = setInterval(updateUI, 1000);
+        }
     }
 
     function updateUI() {
@@ -346,18 +342,15 @@
         let dayTxt = (day === 6) ? "SÁBADO" : (day === 0 ? "DOMINGO" : "LUNES A VIERNES");
 
         const schedule = data[currentRouteKey].h[type][currentDirIdx];
-
         document.getElementById('currTime').innerText = formatAMPM(currentTimeStr);
         document.getElementById('dayLabel').innerText = dayTxt;
         document.getElementById('originDisplay').innerText = "Desde " + data[currentRouteKey].dirs[currentDirIdx];
-        document.getElementById('countdown').style.color = "var(--accent-color)";
-        document.getElementById('countdown').style.fontWeight = "700";
 
         if (schedule[0] === "---") {
             document.getElementById('countdown').innerText = "SIN SERVICIO";
             document.getElementById('nextBus').innerText = "--:--";
             document.getElementById('prevBus').innerText = "--:--";
-            document.getElementById('otherTimes').innerText = "No hay buses programados para hoy.";
+            document.getElementById('otherTimes').innerText = "Sin buses hoy.";
             return;
         }
 
@@ -377,25 +370,21 @@
             const s = totalSeg % 60;
 
             document.getElementById('countdown').innerText = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+            document.getElementById('countdown').style.color = "var(--accent-color)";
             const others = schedule.slice(nextIdx + 1);
             document.getElementById('otherTimes').innerText = others.length > 0 ? others.map(formatAMPM).join(' • ') : "Último bus del día.";
         } else {
-            document.getElementById('countdown').innerText = "FIN DEL SERVICIO POR HOY";
+            document.getElementById('countdown').innerText = "FIN DEL SERVICIO";
             document.getElementById('countdown').style.color = "#ff4d4d"; 
-            document.getElementById('countdown').style.fontWeight = "400";
-            
             document.getElementById('prevBus').innerText = formatAMPM(schedule[schedule.length-1]);
-            document.getElementById('otherTimes').innerText = "No hay más buses por hoy.";
-
+            document.getElementById('otherTimes').innerText = "No hay más buses hoy.";
+            
             let mañanaIdx = (day + 1) % 7;
             let tipoMañana = (mañanaIdx === 6) ? "sabado" : (mañanaIdx === 0 ? "domingo" : "semana");
             const horarioMañana = data[currentRouteKey].h[tipoMañana][currentDirIdx];
-            
-            if (horarioMañana && horarioMañana[0] !== "---") {
-                document.getElementById('nextBus').innerHTML = `<span style="font-size:10px; display:block;">(mañana)</span>${formatAMPM(horarioMañana[0])}`;
-            } else {
-                document.getElementById('nextBus').innerText = "--:--";
-            }
+            document.getElementById('nextBus').innerHTML = (horarioMañana && horarioMañana[0] !== "---") 
+                ? `<small style="display:block;font-size:9px">MAÑANA</small>${formatAMPM(horarioMañana[0])}` 
+                : "--:--";
         }
     }
 
@@ -409,20 +398,12 @@
     }
 
     function filterRoutes() {
-        const input = document.getElementById('routeSearch');
-        const filter = input.value.toLowerCase();
+        const filter = document.getElementById('routeSearch').value.toLowerCase();
         const buttons = document.querySelectorAll('#step1 .btn-ruta');
-
         buttons.forEach(btn => {
-            const routeName = btn.innerText.toLowerCase();
-            if (routeName.includes(filter)) {
-                btn.style.display = "";
-            } else {
-                btn.style.display = "none";
-            }
+            btn.style.display = btn.innerText.toLowerCase().includes(filter) ? "" : "none";
         });
     }
-
 </script>
 </body>
 </html>
