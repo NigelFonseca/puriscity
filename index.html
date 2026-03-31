@@ -25,6 +25,22 @@
             min-height: 100vh;
         }
 
+        .route-list-container {
+            max-height: 60vh; 
+            overflow-y: auto; 
+            padding: 5px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color) transparent;
+        }
+
+        .route-list-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .route-list-container::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 10px;
+        }
+
         .search-container {
             position: relative;
             width: 100%;
@@ -133,12 +149,13 @@
             <img src="img/logo-puriscity.png" alt="Logo PurisCity" style="max-width: 250px; height: auto;">
         </div>
         <h2>Rutas de Autobús en Puriscal 🚌</h2>
+             <h3>Seleccione o busque una ruta para ver el tiempo restante para el próximo autobús:</h3>
             <div class="search-container">
     <span class="search-icon">🔍</span>
     <input type="text" id="routeSearch" placeholder="Buscar mi ruta (ej: San Antonio, San José...)" onkeyup="filterRoutes()">
     </div>
 
-        <h3>Seleccione una ruta para ver el tiempo restante para el próximo autobús:</h3>
+    <div class="route-list-container">
         <button class="btn-ruta" onclick="navigateToRoute('guayabo')">Guayabo (Cruce de Tabarcia) <span class="arrow">></span></button>
         <button class="btn-ruta" onclick="navigateToRoute('palmichal')">Palmichal <span class="arrow">></span></button>
         <button class="btn-ruta" onclick="navigateToRoute('jaris')">Jaris <span class="arrow">></span></button>
@@ -153,6 +170,9 @@
         <button class="btn-ruta btn-disabled" disabled>La Legua <span>En un futuro...</span></button>
         <button class="btn-ruta btn-disabled" disabled>Pozos <span>En un futuro...</span></button>
         <button class="btn-ruta btn-disabled" disabled>Barbacoas <span>En un futuro...</span></button>
+        </div>
+    </div>
+       
     </div>
 
     <div id="step2" class="hidden">
